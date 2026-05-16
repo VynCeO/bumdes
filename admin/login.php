@@ -2,20 +2,16 @@
 session_start();
 require_once '../config.php';
 
-// Kalau sudah login, langsung ke dashboard
-if (isset($_SESSION['admin_id'])) {
-    header('Location: index.php');
-    exit;
-}
+if (admin_login()) redirect('index.php');
 
 $error = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = trim($_POST['username'] ?? '');
-    $password = $_POST['password'] ?? '';
+    $pass     = $_POST['password'] ?? '';
 
-    if (empty($username) || empty($password)) {
-        $error = 'Username dan password harus diisi!';
+    if (empty($username) || empty($pass)) {
+        $error = 'Username dan password wajib diisi!';
     } else {
         $stmt = $conn->prepare("SELECT * FROM admin_user WHERE username = ?");
         $stmt->bind_param('s', $username);
@@ -24,14 +20,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($result->num_rows === 1) {
             $user = $result->fetch_assoc();
-            $hash = hash('sha256', $password);
-
-            if ($hash === $user['password']) {
+            if (hash('sha256', $pass) === $user['password']) {
                 $_SESSION['admin_id'] = $user['id'];
                 $_SESSION['username'] = $user['username'];
-                $_SESSION['nama'] = $user['nama_lengkap'];
-                header('Location: index.php');
-                exit;
+                $_SESSION['nama']     = $user['nama_lengkap'];
+                redirect('index.php');
             } else {
                 $error = 'Username atau password salah!';
             }
@@ -50,13 +43,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body class="login-page">
-
 <div class="login-box">
-    <h1>🌿 Admin Login</h1>
+    <h1>🔐 Admin Login</h1>
     <p>BUMDes Sukses Bersama</p>
 
     <?php if ($error): ?>
-    <div class="alert alert-error"><?= $error ?></div>
+    <div class="alert alert-error" style="margin-bottom:16px;"><?= htmlspecialchars($error) ?></div>
     <?php endif; ?>
 
     <form method="POST">
@@ -68,17 +60,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <label>Password</label>
             <input type="password" name="password" placeholder="Masukkan password" required>
         </div>
-        <button type="submit" class="btn-primary" style="width:100%; padding:12px; font-size:15px;">
-            Login
-        </button>
+        <button type="submit" class="btn-primary" style="width:100%;padding:12px;font-size:15px;">Login</button>
     </form>
 
-    <div style="text-align:center; margin-top:20px;">
-        <a href="../index.php" style="color:#1f5b3a; font-size:14px; text-decoration:none;">
-            ← Kembali ke Website
-        </a>
+    <div style="text-align:center;margin-top:18px;">
+        <a href="../index.php" style="color:#1f5b3a;font-size:14px;">← Kembali ke Website</a>
     </div>
 </div>
-
 </body>
 </html>

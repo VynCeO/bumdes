@@ -1,60 +1,62 @@
 # BUMDes Sukses Bersama - Web PHP Native
+
 ## Cara Instalasi
 
-### 1. Siapkan Database
-- Buka phpMyAdmin atau MySQL CLI
-- Jalankan file `database.sql`
-- Database `bumdes_db` akan terbuat otomatis
+### 1. Setup Database
+- Buka phpMyAdmin
+- Import / jalankan file `database.sql`
 
-### 2. Sesuaikan Koneksi Database
-Edit file `config.php`:
-```php
-$host   = 'localhost';  // host database
-$dbname = 'bumdes_db';  // nama database
-$user   = 'root';       // username MySQL
-$pass   = '';           // password MySQL
+### 2. Konfigurasi
+Edit `config.php`:
+```
+$host   = 'localhost';
+$dbname = 'bumdes_db';
+$user   = 'root';
+$pass   = '';
 ```
 
-### 3. Upload ke Server
-Letakkan seluruh folder `bumdes/` di dalam:
+### 3. Letakkan di Server
 - XAMPP: `htdocs/bumdes/`
 - Laragon: `www/bumdes/`
-- Hosting: `public_html/bumdes/`
 
-### 4. Akses Website
-- **Website:** `http://localhost/bumdes/`
-- **Admin:** `http://localhost/bumdes/admin/login.php`
-- **Login default:** username `admin`, password `admin123`
-
----
+### 4. Akses
+- Website: `http://localhost/bumdes/`
+- Login User: `http://localhost/bumdes/login.php`
+- Daftar User: `http://localhost/bumdes/register.php`
+- Admin: `http://localhost/bumdes/admin/login.php`
+- Login Admin: username `admin` / password `admin123`
 
 ## Struktur File
 ```
 bumdes/
-├── index.php          → Halaman utama (Home)
-├── produk.php         → Halaman produk & unit usaha
-├── reservasi.php      → Form reservasi online
-├── config.php         → Koneksi database
-├── database.sql       → Script buat database
-├── assets/
-│   └── css/style.css  → Styling semua halaman
+├── index.php          → Halaman utama
+├── produk.php         → Halaman produk (no hamburger)
+├── reservasi.php      → Reservasi (wajib login)
+├── login.php          → Login user publik
+├── logout.php         → Logout user
+├── register.php       → Daftar akun baru
+├── config.php         → Koneksi DB + helper
+├── database.sql       → Script database
+├── assets/css/style.css
 └── admin/
-    ├── login.php          → Login admin
-    ├── logout.php         → Logout
-    ├── auth.php           → Cek sesi & sidebar
-    ├── index.php          → Dashboard statistik
-    ├── manage_reservasi.php → Kelola pemesanan
-    ├── manage_produk.php    → Kelola produk/layanan
-    └── manage_pimpinan.php  → Kelola data pimpinan
+    ├── login.php
+    ├── logout.php
+    ├── auth.php               → Cek sesi + sidebar
+    ├── index.php              → Dashboard
+    ├── manage_reservasi.php   → CRUD reservasi
+    ├── manage_produk.php      → CRUD produk + upload foto
+    ├── manage_pimpinan.php    → CRUD pimpinan + upload foto
+    └── manage_users.php       → Kelola user terdaftar
 ```
 
-## Fitur
-✅ Halaman Home dengan hero, pimpinan, unit usaha, kontak  
-✅ Halaman Produk dengan filter kategori  
-✅ Form Reservasi Online dengan tampil pemesanan terbaru  
-✅ Admin Dashboard dengan statistik  
-✅ Kelola Reservasi (konfirmasi / batalkan / hapus)  
-✅ Kelola Produk (tambah / edit / hapus)  
-✅ Kelola Pimpinan (tambah / edit / hapus)  
-✅ Login/Logout admin dengan session  
-✅ Responsive mobile-friendly  
+## Fitur Lengkap
+✅ Register & Login user publik (session + cookie "ingat saya")
+✅ Reservasi wajib login (anti-spam)
+✅ Riwayat reservasi milik user sendiri
+✅ Upload foto produk (JPG/PNG/WEBP, maks 3MB)
+✅ Upload foto pimpinan (JPG/PNG/WEBP, maks 2MB)
+✅ CRUD lengkap reservasi di admin
+✅ CRUD produk & pimpinan dengan foto
+✅ Kelola users terdaftar
+✅ Navbar produk.php tanpa hamburger
+✅ Dashboard admin dengan statistik lengkap

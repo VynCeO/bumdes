@@ -1,9 +1,10 @@
 <?php
+session_start();
 require_once 'config.php';
 
 $filter = $_GET['filter'] ?? 'ALL';
+$icons  = ['🏟️','⛺','💧','☕','🐄','📋','🏪','🌿','🛒'];
 
-// Ambil produk
 if ($filter === 'ALL') {
     $result = $conn->query("SELECT * FROM unit_usaha WHERE status='aktif' ORDER BY urutan ASC");
 } else {
@@ -14,12 +15,8 @@ if ($filter === 'ALL') {
     $result = $stmt->get_result();
 }
 
-$produk = [];
-while ($row = $result->fetch_assoc()) {
-    $produk[] = $row;
-}
-
-$icons = ['🏟️','⛺','💧','☕','🐄','📋','🏪','🌿','🛒'];
+$produk  = [];
+while ($row = $result->fetch_assoc()) $produk[] = $row;
 $filters = ['ALL','GOR','Tenda','Air','Kopi','Ternak','PBB'];
 ?>
 <!DOCTYPE html>
@@ -32,19 +29,14 @@ $filters = ['ALL','GOR','Tenda','Air','Kopi','Ternak','PBB'];
 </head>
 <body>
 
-<!-- LOADER -->
 <div id="loader"><div class="spinner"></div></div>
 
-<!-- NAVBAR -->
+<!-- NAVBAR TANPA HAMBURGER -->
 <nav class="navbar">
-    <div class="nav-left">
-        <span>🌿</span> BUMDES Sugihwaras
-    </div>
-    <div class="hamburger" onclick="toggleMenu()">☰</div>
+    <div class="nav-left">🌿 BUMDES Sugihwaras</div>
     <div class="nav-right" id="navMenu">
         <a href="index.php">Home</a>
-        <div class="dropdown">
-            Produk ▾
+        <div class="dropdown">Produk ▾
             <div class="dropdown-menu">
                 <a href="produk.php">Semua Produk</a>
                 <a href="produk.php?filter=GOR">GOR Sugihwaras</a>
@@ -57,48 +49,56 @@ $filters = ['ALL','GOR','Tenda','Air','Kopi','Ternak','PBB'];
         </div>
         <a href="reservasi.php">Reservasi</a>
         <a href="index.php#kontak">Kontak</a>
-        <a href="admin/login.php" class="btn-masuk">Masuk</a>
+        <?php if (user_login()): ?>
+        <div class="dropdown">
+            👤 <?= htmlspecialchars(explode(' ', $_SESSION['user_nama'])[0]) ?> ▾
+            <div class="dropdown-menu">
+                <a href="reservasi.php">📅 Reservasi Saya</a>
+                <a href="logout.php">🚪 Logout</a>
+            </div>
+        </div>
+        <?php else: ?>
+        <a href="login.php" class="btn-masuk">Masuk</a>
+        <?php endif; ?>
     </div>
 </nav>
 
-<!-- KONTEN -->
 <div class="page-wrapper">
     <div class="page-header">
         <h1>🏪 Produk & Layanan Kami</h1>
         <p>Berbagai pilihan berkualitas untuk kebutuhan Anda</p>
     </div>
 
-    <!-- FILTER -->
     <div class="filter-bar">
         <?php foreach ($filters as $f): ?>
-        <a href="produk.php?filter=<?= $f ?>"
-           class="filter-btn <?= $filter === $f ? 'active' : '' ?>">
+        <a href="produk.php?filter=<?= $f ?>" class="filter-btn <?= $filter === $f ? 'active' : '' ?>">
             <?= $f === 'ALL' ? 'Semua Produk' : $f ?>
         </a>
         <?php endforeach; ?>
     </div>
 
-    <!-- GRID PRODUK -->
     <div class="produk-grid">
         <?php if (empty($produk)): ?>
-            <p style="grid-column:1/-1; text-align:center; color:#999; padding:40px;">
-                Tidak ada produk untuk kategori ini.
-            </p>
+        <p style="grid-column:1/-1;text-align:center;color:#999;padding:40px;">Tidak ada produk.</p>
         <?php else: ?>
         <?php foreach ($produk as $idx => $p): ?>
         <div class="produk-card">
-            <div style="background: linear-gradient(135deg, #1f5b3a, #2d8b5a); height:160px; display:flex; align-items:center; justify-content:center; font-size:64px;">
-                <?= $icons[$idx % count($icons)] ?>
-            </div>
+            <?php if (!empty($p['foto']) && file_exists($p['foto'])): ?>
+                <img src="<?= htmlspecialchars($p['foto']) ?>" alt="<?= htmlspecialchars($p['nama']) ?>" style="width:100%;height:180px;object-fit:cover;">
+            <?php else: ?>
+                <div style="background:linear-gradient(135deg,#1f5b3a,#2d8b5a);height:180px;display:flex;align-items:center;justify-content:center;font-size:64px;">
+                    <?= $icons[$idx % count($icons)] ?>
+                </div>
+            <?php endif; ?>
             <div class="produk-card-body">
                 <span class="produk-badge"><?= htmlspecialchars(explode(' ', $p['nama'])[0]) ?></span>
                 <h3><?= htmlspecialchars($p['nama']) ?></h3>
                 <p><?= htmlspecialchars($p['deskripsi'] ?? 'Produk berkualitas dari BUMDes kami.') ?></p>
                 <div class="produk-footer-card">
                     <span class="produk-harga">
-                        <?= $p['harga'] > 0 ? 'Rp ' . number_format($p['harga'], 0, ',', '.') : 'Hubungi Kami' ?>
+                        <?= $p['harga'] > 0 ? 'Rp '.number_format($p['harga'],0,',','.') : 'Hubungi Kami' ?>
                     </span>
-                    <a href="reservasi.php" class="btn-pesan">Pesan</a>
+                    <a href="<?= user_login() ? 'reservasi.php' : 'login.php' ?>" class="btn-pesan">Pesan</a>
                 </div>
             </div>
         </div>
@@ -107,15 +107,9 @@ $filters = ['ALL','GOR','Tenda','Air','Kopi','Ternak','PBB'];
     </div>
 </div>
 
-<!-- FOOTER -->
-<footer>
-    <p>© <?= date('Y') ?> BUMDes Sukses Bersama - Desa Sugihwaras</p>
-</footer>
+<footer><p>© <?= date('Y') ?> BUMDes Sukses Bersama - Desa Sugihwaras</p></footer>
 
 <script>
-function toggleMenu() {
-    document.getElementById('navMenu').classList.toggle('open');
-}
 window.addEventListener('load', function() {
     document.getElementById('loader').style.display = 'none';
 });

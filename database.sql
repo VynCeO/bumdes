@@ -1,6 +1,5 @@
 -- =============================================
--- BUMDes Sukses Bersama - Database
--- Jalankan file ini di phpMyAdmin / MySQL CLI
+-- BUMDes Sukses Bersama - Database Lengkap
 -- =============================================
 
 CREATE DATABASE IF NOT EXISTS bumdes_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -12,6 +11,16 @@ CREATE TABLE IF NOT EXISTS admin_user (
     username VARCHAR(50) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
     nama_lengkap VARCHAR(100)
+);
+
+-- Tabel USER publik (untuk reservasi anti-spam)
+CREATE TABLE IF NOT EXISTS users (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nama VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    no_hp VARCHAR(20),
+    password VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Tabel pimpinan
@@ -29,6 +38,7 @@ CREATE TABLE IF NOT EXISTS unit_usaha (
     nama VARCHAR(100) NOT NULL,
     deskripsi TEXT,
     harga DECIMAL(10,2) DEFAULT 0,
+    foto VARCHAR(255),
     urutan INT DEFAULT 1,
     status ENUM('aktif','nonaktif') DEFAULT 'aktif'
 );
@@ -36,6 +46,7 @@ CREATE TABLE IF NOT EXISTS unit_usaha (
 -- Tabel reservasi
 CREATE TABLE IF NOT EXISTS reservasi (
     id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT,
     nama VARCHAR(100) NOT NULL,
     no_hp VARCHAR(20) NOT NULL,
     email VARCHAR(100),
@@ -44,25 +55,26 @@ CREATE TABLE IF NOT EXISTS reservasi (
     tanggal_kembali DATE,
     keterangan TEXT,
     status ENUM('pending','confirmed','cancelled') DEFAULT 'pending',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
 );
 
--- Data default admin (password: admin123)
-INSERT INTO admin_user (username, password, nama_lengkap) VALUES
+-- Data admin default (password: admin123)
+INSERT IGNORE INTO admin_user (username, password, nama_lengkap) VALUES
 ('admin', SHA2('admin123', 256), 'Administrator');
 
 -- Data pimpinan
-INSERT INTO pimpinan (nama, posisi, urutan) VALUES
-('Syaiful', 'Komisaris / Kepala Desa', 1),
-('Marsudi, S.Pd, M.M', 'Direktur', 2),
-('Agus Indra Prasetyo', 'Sekretaris', 3),
-('Mohammad Murti Sudiyo', 'Bendahara', 4);
+INSERT IGNORE INTO pimpinan (id, nama, posisi, urutan) VALUES
+(1,'Syaiful','Komisaris / Kepala Desa',1),
+(2,'Marsudi, S.Pd, M.M','Direktur',2),
+(3,'Agus Indra Prasetyo','Sekretaris',3),
+(4,'Mohammad Murti Sudiyo','Bendahara',4);
 
 -- Data unit usaha
-INSERT INTO unit_usaha (nama, deskripsi, harga, urutan) VALUES
-('GOR Sugihwaras', 'Gedung Olahraga serbaguna untuk berbagai acara dan kegiatan olahraga masyarakat.', 500000, 1),
-('Rental Tenda', 'Sewa tenda untuk berbagai acara: pernikahan, hajatan, dan kegiatan luar ruangan.', 150000, 2),
-('Air Minum Kemasan', 'Air minum dalam kemasan higienis produksi BUMDes berkualitas terjamin.', 20000, 3),
-('Kopi Melek', 'Warung kopi dengan berbagai varian minuman khas dan jajanan lokal.', 10000, 4),
-('Peternakan Sapi & Kambing', 'Penjualan sapi dan kambing berkualitas dari peternakan desa Sugihwaras.', 0, 5),
-('Pembayaran PBB', 'Layanan pembayaran Pajak Bumi dan Bangunan (PBB) tanpa antri panjang.', 0, 6);
+INSERT IGNORE INTO unit_usaha (id, nama, deskripsi, harga, urutan) VALUES
+(1,'GOR Sugihwaras','Gedung Olahraga serbaguna untuk berbagai acara dan kegiatan olahraga masyarakat.',500000,1),
+(2,'Rental Tenda','Sewa tenda untuk berbagai acara: pernikahan, hajatan, dan kegiatan luar ruangan.',150000,2),
+(3,'Air Minum Kemasan','Air minum dalam kemasan higienis produksi BUMDes berkualitas terjamin.',20000,3),
+(4,'Kopi Melek','Warung kopi dengan berbagai varian minuman khas dan jajanan lokal.',10000,4),
+(5,'Peternakan Sapi & Kambing','Penjualan sapi dan kambing berkualitas dari peternakan desa Sugihwaras.',0,5),
+(6,'Pembayaran PBB','Layanan pembayaran Pajak Bumi dan Bangunan (PBB) tanpa antri panjang.',0,6);

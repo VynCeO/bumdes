@@ -1,11 +1,10 @@
 <?php
+session_start();
 require_once 'config.php';
 
-// Ambil data pimpinan dari DB
-$pimpinan = $conn->query("SELECT * FROM pimpinan ORDER BY urutan ASC");
-
-// Ambil data unit usaha dari DB
+$pimpinan  = $conn->query("SELECT * FROM pimpinan ORDER BY urutan ASC");
 $unit_usaha = $conn->query("SELECT * FROM unit_usaha WHERE status='aktif' ORDER BY urutan ASC");
+$icons = ['🏟️','⛺','💧','☕','🐄','📋'];
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -17,19 +16,15 @@ $unit_usaha = $conn->query("SELECT * FROM unit_usaha WHERE status='aktif' ORDER 
 </head>
 <body>
 
-<!-- LOADER -->
 <div id="loader"><div class="spinner"></div></div>
 
 <!-- NAVBAR -->
 <nav class="navbar">
-    <div class="nav-left">
-        <span>🌿</span> BUMDES Sugihwaras
-    </div>
+    <div class="nav-left">🌿 BUMDES Sugihwaras</div>
     <div class="hamburger" onclick="toggleMenu()">☰</div>
     <div class="nav-right" id="navMenu">
         <a href="index.php">Home</a>
-        <div class="dropdown">
-            Produk ▾
+        <div class="dropdown">Produk ▾
             <div class="dropdown-menu">
                 <a href="produk.php">Semua Produk</a>
                 <a href="produk.php?filter=GOR">GOR Sugihwaras</a>
@@ -42,7 +37,20 @@ $unit_usaha = $conn->query("SELECT * FROM unit_usaha WHERE status='aktif' ORDER 
         </div>
         <a href="reservasi.php">Reservasi</a>
         <a href="#kontak">Kontak</a>
-        <a href="admin/login.php" class="btn-masuk">Masuk</a>
+
+        <?php if (user_login()): ?>
+        <div class="dropdown">
+            👤 <?= htmlspecialchars(explode(' ', $_SESSION['user_nama'])[0]) ?> ▾
+            <div class="dropdown-menu">
+                <a href="reservasi.php">📅 Reservasi Saya</a>
+                <a href="logout.php">🚪 Logout</a>
+            </div>
+        </div>
+        <?php else: ?>
+        <a href="login.php" class="btn-masuk">Masuk</a>
+        <?php endif; ?>
+
+        <a href="admin/login.php" style="font-size:12px;color:#999;">Admin</a>
     </div>
 </nav>
 
@@ -62,8 +70,11 @@ $unit_usaha = $conn->query("SELECT * FROM unit_usaha WHERE status='aktif' ORDER 
     <div class="pimpinan-container">
         <?php while ($p = $pimpinan->fetch_assoc()): ?>
         <div class="card-pimpinan">
-            <img src="https://ui-avatars.com/api/?name=<?= urlencode($p['nama']) ?>&background=1f5b3a&color=fff&size=200"
-                 alt="<?= htmlspecialchars($p['nama']) ?>">
+            <?php if (!empty($p['foto']) && file_exists($p['foto'])): ?>
+                <img src="<?= htmlspecialchars($p['foto']) ?>" alt="<?= htmlspecialchars($p['nama']) ?>">
+            <?php else: ?>
+                <img src="https://ui-avatars.com/api/?name=<?= urlencode($p['nama']) ?>&background=1f5b3a&color=fff&size=200" alt="<?= htmlspecialchars($p['nama']) ?>">
+            <?php endif; ?>
             <div class="card-info">
                 <h3><?= htmlspecialchars($p['nama']) ?></h3>
                 <p><?= htmlspecialchars($p['posisi']) ?></p>
@@ -77,13 +88,7 @@ $unit_usaha = $conn->query("SELECT * FROM unit_usaha WHERE status='aktif' ORDER 
 <section class="unit-usaha reveal" id="unit-usaha">
     <h2 class="section-title">Unit Usaha Kami</h2>
     <div class="unit-container">
-        <?php
-        // Reset pointer hasil query
-        $unit_usaha->data_seek(0);
-        $icons = ['🏟️','⛺','💧','☕','🐄','📋'];
-        $i = 0;
-        while ($u = $unit_usaha->fetch_assoc()):
-        ?>
+        <?php $i = 0; $unit_usaha->data_seek(0); while ($u = $unit_usaha->fetch_assoc()): ?>
         <a href="produk.php?filter=<?= urlencode($u['nama']) ?>" class="unit-card">
             <div class="icon"><?= $icons[$i % count($icons)] ?></div>
             <p><?= htmlspecialchars($u['nama']) ?></p>
@@ -116,26 +121,15 @@ $unit_usaha = $conn->query("SELECT * FROM unit_usaha WHERE status='aktif' ORDER 
     </div>
 </section>
 
-<!-- FOOTER -->
-<footer>
-    <p>© <?= date('Y') ?> BUMDes Sukses Bersama - Desa Sugihwaras</p>
-</footer>
+<footer><p>© <?= date('Y') ?> BUMDes Sukses Bersama - Desa Sugihwaras</p></footer>
 
 <script>
-function toggleMenu() {
-    document.getElementById('navMenu').classList.toggle('open');
-}
-
-// Reveal on scroll
+function toggleMenu() { document.getElementById('navMenu').classList.toggle('open'); }
 function checkReveal() {
     document.querySelectorAll('.reveal').forEach(function(el) {
-        var rect = el.getBoundingClientRect();
-        if (rect.top < window.innerHeight - 100) {
-            el.classList.add('active');
-        }
+        if (el.getBoundingClientRect().top < window.innerHeight - 100) el.classList.add('active');
     });
 }
-
 window.addEventListener('scroll', checkReveal);
 window.addEventListener('load', function() {
     document.getElementById('loader').style.display = 'none';
