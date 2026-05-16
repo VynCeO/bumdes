@@ -57,7 +57,13 @@ $prefill_email = $_COOKIE['bumdes_user'] ?? '';
 <body class="login-page">
 
 <div class="login-box">
-    <h1>🌿 Masuk</h1>
+    <div class="login-icon">
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="24" cy="12" r="8" fill="#1f5b3a"/>
+            <path d="M24 22C16.268 22 10 26.477 10 32v6h28v-6c0-5.523-6.268-10-14-10z" fill="#1f5b3a"/>
+        </svg>
+    </div>
+    <h1>Login User</h1>
     <p>Login untuk melakukan reservasi</p>
 
     <?php if ($error): ?>
@@ -67,7 +73,7 @@ $prefill_email = $_COOKIE['bumdes_user'] ?? '';
     <form method="POST">
         <div class="form-group">
             <label>Email</label>
-            <input type="email" name="email" value="<?= htmlspecialchars($prefill_email) ?>" placeholder="email@contoh.com" required autofocus>
+            <input type="email" name="email" value="<?= htmlspecialchars($prefill_email) ?>" placeholder="email@gmail.com" required autofocus>
         </div>
         <div class="form-group">
             <label>Password</label>

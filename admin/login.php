@@ -44,8 +44,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body class="login-page">
 <div class="login-box">
-    <h1>🔐 Admin Login</h1>
-    <p>BUMDes Sukses Bersama</p>
+    <div class="login-icon">
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 20V14C12 9.58172 15.5817 6 21 6C26.4183 6 30 9.58172 30 14V20M10 20H32C33.1046 20 34 20.8954 34 22V38C34 39.1046 33.1046 40 32 40H10C8.89543 40 8 39.1046 8 38V22C8 20.8954 8.89543 20 10 20Z" stroke="#1f5b3a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            <circle cx="21" cy="29" r="2" fill="#1f5b3a"/>
+        </svg>
+    </div>
+    <h1>Login Admin</h1>
+    <p>Akses Panel Administrasi</p>
 
     <?php if ($error): ?>
     <div class="alert alert-error" style="margin-bottom:16px;"><?= htmlspecialchars($error) ?></div>

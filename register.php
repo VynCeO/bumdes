@@ -56,7 +56,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body class="login-page">
 
 <div class="login-box" style="max-width:420px;">
-    <h1>🌿 Daftar Akun</h1>
+    <div class="login-icon">
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="24" cy="12" r="8" fill="#1f5b3a"/>
+            <path d="M24 22C16.268 22 10 26.477 10 32v6h28v-6c0-5.523-6.268-10-14-10z" fill="#1f5b3a"/>
+            <line x1="24" y1="26" x2="24" y2="38" stroke="#1f5b3a" stroke-width="2"/>
+            <line x1="18" y1="32" x2="30" y2="32" stroke="#1f5b3a" stroke-width="2"/>
+        </svg>
+    </div>
+    <h1>Daftar Akun</h1>
     <p>Buat akun untuk melakukan reservasi</p>
 
     <?php if ($error): ?>

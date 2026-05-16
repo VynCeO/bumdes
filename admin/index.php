@@ -25,28 +25,33 @@ $reservasi_baru = $conn->query("SELECT r.*, u.nama as uname FROM reservasi r LEF
 
 <div class="main-content">
     <div class="top-bar">
-        <h1>📊 Dashboard</h1>
+        <h1>Dashboard Admin</h1>
         <span><?= date('d F Y') ?></span>
     </div>
 
     <div class="stat-grid">
         <div class="stat-card">
+            <div class="stat-icon">📊</div>
             <div class="angka"><?= $total_reservasi ?></div>
             <div class="label">Total Reservasi</div>
         </div>
         <div class="stat-card orange">
+            <div class="stat-icon">⏳</div>
             <div class="angka"><?= $pending ?></div>
             <div class="label">Reservasi Pending</div>
         </div>
         <div class="stat-card">
+            <div class="stat-icon">📦</div>
             <div class="angka"><?= $total_produk ?></div>
             <div class="label">Total Produk</div>
         </div>
         <div class="stat-card">
+            <div class="stat-icon">👔</div>
             <div class="angka"><?= $total_pimpinan ?></div>
             <div class="label">Data Pimpinan</div>
         </div>
         <div class="stat-card orange">
+            <div class="stat-icon">👥</div>
             <div class="angka"><?= $total_users ?></div>
             <div class="label">User Terdaftar</div>
         </div>

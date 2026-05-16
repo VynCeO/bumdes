@@ -3,7 +3,7 @@
 $host   = 'localhost';
 $dbname = 'bumdes_db';
 $user   = 'root';
-$pass   = '';
+$pass   = 'vync';
 
 $conn = new mysqli($host, $user, $pass, $dbname);
 if ($conn->connect_error) {

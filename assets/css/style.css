@@ -71,6 +71,21 @@ html {
     color: var(--hijau);
 }
 
+.logo-navbar {
+    height: 50px;
+    width: 50px;
+    object-fit: contain;
+    transition: transform 0.3s;
+}
+
+.logo-navbar:hover {
+    transform: scale(1.05);
+}
+
+.nav-brand {
+    color: var(--hijau);
+}
+
 .nav-right {
     display: flex;
     align-items: center;
@@ -309,6 +324,64 @@ html {
 .unit-card p {
     font-size: 13px;
     font-weight: 500;
+}
+
+/* ---- VISI MISI ---- */
+.visi-misi {
+    padding: 60px 40px;
+    background: linear-gradient(135deg, var(--hijau) 0%, var(--hijau-tua) 100%);
+    color: white;
+}
+
+.visi-misi-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.visi-box, .misi-box {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 30px;
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.visi-box h3, .misi-box h3 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.visi-box p {
+    font-size: 15px;
+    line-height: 1.8;
+    font-style: italic;
+}
+
+.misi-box ul {
+    list-style: none;
+}
+
+.misi-box li {
+    font-size: 14px;
+    line-height: 1.8;
+    margin-bottom: 12px;
+    padding-left: 25px;
+    position: relative;
+}
+
+.misi-box li:before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: #ffc107;
+    font-weight: bold;
+    font-size: 16px;
 }
 
 /* ---- KONTAK ---- */
@@ -733,6 +806,12 @@ footer {
     margin-top: 5px;
 }
 
+.stat-icon {
+    font-size: 32px;
+    margin-bottom: 10px;
+    opacity: 0.8;
+}
+
 /* Table */
 .table-box {
     background: white;
@@ -884,6 +963,18 @@ tr:hover td {
     margin-bottom: 5px;
 }
 
+.login-icon {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.login-icon svg {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto;
+    display: block;
+}
+
 .login-box p {
     text-align: center;
     color: #888;
@@ -895,13 +986,20 @@ tr:hover td {
 .reveal {
     opacity: 0;
     transform: translateY(25px);
-    transition: 0.6s ease;
+    transition: opacity 0.8s ease, transform 0.8s ease;
 }
 
 .reveal.active {
     opacity: 1;
     transform: translateY(0);
 }
+
+/* Staggered animation delay for multiple elements */
+.reveal:nth-child(1) { transition-delay: 0s; }
+.reveal:nth-child(2) { transition-delay: 0.1s; }
+.reveal:nth-child(3) { transition-delay: 0.2s; }
+.reveal:nth-child(4) { transition-delay: 0.3s; }
+.reveal:nth-child(n+5) { transition-delay: 0.4s; }
 
 /* ---- RESPONSIVE ---- */
 @media (max-width: 768px) {
@@ -934,6 +1032,10 @@ tr:hover td {
     .hero-kecil { font-size: 16px; }
 
     .pimpinan, .unit-usaha, .kontak { padding: 30px 20px; }
+
+    .visi-misi { padding: 40px 20px; }
+    .visi-misi-container { grid-template-columns: 1fr; gap: 25px; }
+    .visi-box, .misi-box { padding: 20px; }
 
     .reservasi-grid { grid-template-columns: 1fr; }
 

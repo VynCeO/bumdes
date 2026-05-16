@@ -20,37 +20,28 @@ $icons = ['🏟️','⛺','💧','☕','🐄','📋'];
 
 <!-- NAVBAR -->
 <nav class="navbar">
-    <div class="nav-left">🌿 BUMDES Sugihwaras</div>
+    <div class="nav-left">
+        <img src="assets/images/logo.png" alt="Logo BUMDes" class="logo-navbar">
+        <span class="nav-brand">BUMDES Sugihwaras</span>
+    </div>
     <div class="hamburger" onclick="toggleMenu()">☰</div>
     <div class="nav-right" id="navMenu">
         <a href="index.php">Home</a>
-        <div class="dropdown">Produk ▾
-            <div class="dropdown-menu">
-                <a href="produk.php">Semua Produk</a>
-                <a href="produk.php?filter=GOR">GOR Sugihwaras</a>
-                <a href="produk.php?filter=Tenda">Rental Tenda</a>
-                <a href="produk.php?filter=Air">Air Minum</a>
-                <a href="produk.php?filter=Kopi">Kopi Melek</a>
-                <a href="produk.php?filter=Ternak">Peternakan</a>
-                <a href="produk.php?filter=PBB">Pembayaran PBB</a>
-            </div>
-        </div>
+        <a href="produk.php">Produk</a>
         <a href="reservasi.php">Reservasi</a>
         <a href="#kontak">Kontak</a>
 
         <?php if (user_login()): ?>
         <div class="dropdown">
-            👤 <?= htmlspecialchars(explode(' ', $_SESSION['user_nama'])[0]) ?> ▾
+            <?= htmlspecialchars(explode(' ', $_SESSION['user_nama'])[0]) ?> ▾
             <div class="dropdown-menu">
-                <a href="reservasi.php">📅 Reservasi Saya</a>
-                <a href="logout.php">🚪 Logout</a>
+                <a href="reservasi.php">Reservasi Saya</a>
+                <a href="logout.php">Logout</a>
             </div>
         </div>
         <?php else: ?>
         <a href="login.php" class="btn-masuk">Masuk</a>
         <?php endif; ?>
-
-        <a href="admin/login.php" style="font-size:12px;color:#999;">Admin</a>
     </div>
 </nav>
 
@@ -60,7 +51,28 @@ $icons = ['🏟️','⛺','💧','☕','🐄','📋'];
         <p class="hero-kecil">Selamat Datang di</p>
         <h1>BUMDes Sukses Bersama</h1>
         <p class="hero-kecil">Desa Sugihwaras</p>
-        <a href="#unit-usaha" class="hero-btn">Jelajahi Layanan</a>
+        <a href="#visi-misi" class="hero-btn">Jelajahi Layanan</a>
+    </div>
+</section>
+
+<!-- VISI MISI -->
+<section class="visi-misi reveal" id="visi-misi">
+    <div class="visi-misi-container">
+        <div class="visi-box">
+            <h3>Visi Desa</h3>
+            <p>"Terwujudnya Sugihwaras Maju yang Cerdas, Sehat, Unggul, Mandiri dan Sejahtera Berlandaskan Semangat Gotong Royong Melalui Pengelolaan Pemerintahan yang Bersih, Efektif, dan Terpercaya"</p>
+        </div>
+        <div class="misi-box">
+            <h3>Misi Desa</h3>
+            <ul>
+                <li>Menyelenggarakan pemerintahan desa yang bersih, efektif, transparan dan akuntabel</li>
+                <li>Meningkatkan kualitas pendidikan dan kesadaran masyarakat</li>
+                <li>Meningkatkan derajat kesehatan masyarakat</li>
+                <li>Mengembangkan ekonomi kerakyatan melalui pemberdayaan BUMDes</li>
+                <li>Meningkatkan keterampilan masyarakat di berbagai bidang</li>
+                <li>Optimalisasi pemanfaatan teknologi informasi untuk peningkatan layanan</li>
+            </ul>
+        </div>
     </div>
 </section>
 
@@ -102,10 +114,10 @@ $icons = ['🏟️','⛺','💧','☕','🐄','📋'];
     <div class="kontak-wrapper">
         <div class="kontak-kiri">
             <h2>Kontak Kami</h2>
-            <p>📍 Jl. H. Nur Sugihwaras, RT 11/RW 03, Rejo, Candi, Sidoarjo</p>
-            <p>📞 Telp: 0877-5813-5806</p>
-            <p>💬 WhatsApp: 0877-5813-5806</p>
-            <p>📧 bumdes@sugihwaras.id</p>
+            <p><strong>Alamat:</strong> Jl. H. Nur Sugihwaras, RT 11/RW 03, Rejo, Candi, Sidoarjo</p>
+            <p><strong>Telepon:</strong> 0877-5813-5806</p>
+            <p><strong>WhatsApp:</strong> 0877-5813-5806</p>
+            <p><strong>Email:</strong> bumdes@sugihwaras.id</p>
         </div>
         <div class="kontak-kanan">
             <a href="https://wa.me/6287758135806" target="_blank" class="sosmed-link">
