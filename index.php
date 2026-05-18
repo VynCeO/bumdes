@@ -121,13 +121,16 @@ $icons = ['🏟️','⛺','💧','☕','🐄','📋'];
         </div>
         <div class="kontak-kanan">
             <a href="https://wa.me/6287758135806" target="_blank" class="sosmed-link">
-                <span class="sosmed-icon">💬</span> WhatsApp
+                <img src="assets/images/medsos-icon/whatsapp.png" alt="WhatsApp" class="sosmed-icon">
+                WhatsApp
             </a>
             <a href="https://www.instagram.com/bumdes.sugihwaras19" target="_blank" class="sosmed-link">
-                <span class="sosmed-icon">📷</span> Instagram
+                <img src="assets/images/medsos-icon/instagram.png" alt="Instagram" class="sosmed-icon">
+                Instagram
             </a>
             <a href="https://www.facebook.com" target="_blank" class="sosmed-link">
-                <span class="sosmed-icon">👍</span> Facebook
+                <img src="assets/images/medsos-icon/facebook.png" alt="Facebook" class="sosmed-icon">
+                Facebook
             </a>
         </div>
     </div>
